@@ -8,15 +8,26 @@
 </head>
 <body>
     <h1>Usuario a editar</h1>
-    <?php 
-        echo "NOMBRE: ".$_GET['nombre']."<br>";
-        echo "CONTRASEÑA: ".$_GET['contraseña']."<br>";
-        echo "ROL: ".$_GET['rol']."<br>";
-    ?>
     <form action="../helper/editarUsuario.php" method="post">
-        Nombre nuevo= <input type='text' id='nomb' name='nomb'><br>
-        Contraseña nueva= <input type='text' name='contra'><br>
-        Rol nuevo= <input type='text' name='r'><br>
+    <?php
+        $cont=-1;
+        $datos_json=file_get_contents("../datos.json");
+        $datos=json_decode($datos_json, true);
+        $dat=$datos['datos'];
+        foreach ($dat as $value) {
+            $cont++;
+            if($value['nombre']==$_GET['nombre']){
+                $aux=$cont;
+            }
+        }
+        echo "<input type='hidden' id='cont' name='cont' value='".$cont."'><br>";
+        echo "NOMBRE: <input type='text' id='nomb' name='nomb' value='".$_GET['nombre']."'><br>";
+        echo "CONTRASEÑA: <input type='text' name='contra' value='".$_GET['contraseña']."'><br>";
+        if($_GET['rol']=='admin')
+            echo "ROL: <input type='radio' name='r' value='admin' checked> otro <input type='radio' name='r' value='otro'><br>";
+        else
+            echo "ROL: <input type='radio' name='r' value='admin'> otro <input type='radio' name='r' value='otro' checked><br>";
+    ?>
         <button type='submit'>Edita</button>
     </form>
 </body>
